@@ -11,7 +11,7 @@ version = "0.1.1"
 edition = "2018"
 
 [dependencies]
-humanize = { version = "0.0.1", git = "https://github.com/marirs/humanize-rs", branch = "master" }
+humanize = { git = "https://github.com/marirs/humanize-rs", branch = "master" }
 libc = "0.2.94"
 serde = { version = "1.0.126", features = ["derive"] }
 
