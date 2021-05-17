@@ -1,0 +1,36 @@
+[package]
+name = "systeminfo"
+authors = ["Marirs <marirs@gmail.com>"]
+description = "Gets the system hardware and os information"
+keywords = ["hardware", "operatingsystem", "os", "system", "information"]
+repository = "https://github.com/marirs/systeminfo-rs"
+readme = "README.md"
+license = "MIT"
+version = "0.1.1"
+edition = "2018"
+
+[dependencies]
+humanize = { git = "https://github.com/marirs/humanize-rs", branch = "master" }
+libc = "0.2.94"
+serde = { version = "1.0.126", features = ["derive"] }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+wmi = "0.8.1"
+winapi = { version = "0.3.9", features = ["winnt", "winerror", "winreg", "ntstatus", "libloaderapi", "winuser", "processthreadsapi"] }
+
+[lib]
+name = "systeminfo"
+path = "src/lib.rs"
+
+[badges]
+travis-ci = { repository = "marirs/systeminfo-rs" }
+
+[profile.dev]
+opt-level = 3
+
+[profile.release]
+codegen-units = 1
+debug-assertions = false
+debug = false
+opt-level = 3
+lto = true
