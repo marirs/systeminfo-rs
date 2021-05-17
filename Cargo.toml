@@ -4,13 +4,14 @@ authors = ["Marirs <marirs@gmail.com>"]
 description = "Gets the system hardware and os information"
 keywords = ["hardware", "operatingsystem", "os", "system", "information"]
 repository = "https://github.com/marirs/systeminfo-rs"
+exclude = ["examples"]
 readme = "README.md"
 license = "MIT"
 version = "0.1.1"
 edition = "2018"
 
 [dependencies]
-humanize = { git = "https://github.com/marirs/humanize-rs", branch = "master" }
+humanize = { version = "0.0.1", git = "https://github.com/marirs/humanize-rs", branch = "master" }
 libc = "0.2.94"
 serde = { version = "1.0.126", features = ["derive"] }
 
