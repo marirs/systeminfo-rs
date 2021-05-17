@@ -7,7 +7,7 @@ Get the System Hardware & Operating System information.
 ## Usage
 ```toml
 [dependencies]
-systeminfo = "0.1.1"
+systeminfo = { git = "https://github.com/marirs/systeminfo-rs", branch = "main" }
 ```
 and then
 ```rust
