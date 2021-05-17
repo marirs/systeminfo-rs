@@ -36,6 +36,7 @@ pub fn from_system_os() -> SystemOS {
     let edition = os_release
         .get("VERSION_CODENAME")
         .cloned()
+        .and_then(|x|if x.is_empty() {None} else {Some(x)})
         .unwrap_or_else(|| os_release.get("PRETTY_NAME").cloned().unwrap_or_default())
         .to_uppercase();
 
