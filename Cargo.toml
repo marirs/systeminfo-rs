@@ -7,8 +7,8 @@ repository = "https://github.com/marirs/systeminfo-rs"
 exclude = ["examples"]
 readme = "README.md"
 license = "MIT"
-version = "0.1.1"
-edition = "2018"
+version = "0.1.2"
+edition = "2021"
 
 [dependencies]
 humanize = { git = "https://github.com/marirs/humanize-rs", branch = "master" }

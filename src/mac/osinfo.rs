@@ -51,6 +51,8 @@ fn version() -> (String, String, String) {
 fn edition<'a>(v: Version) -> &'a str {
     if let Version::Semantic(major, minor, patch) = v {
         match (major, minor, patch) {
+            (13, _, _) => "macOS Ventura",
+            (12, _, _) => "macOS Monterey",
             (11, _, _) => "macOS Big Sur",
             (10, 15, _) => "macOS Catalina",
             (10, 14, _) => "macOS Mojave",
