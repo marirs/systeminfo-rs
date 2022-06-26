@@ -9,7 +9,7 @@ fn wrap_buffer(mut bytes: Vec<u8>) -> OsString {
     let end = bytes
         .iter()
         .position(|&byte| byte == 0x00)
-        .unwrap_or_else(|| bytes.len());
+        .unwrap_or(bytes.len());
     bytes.resize(end, 0x00);
 
     OsString::from_vec(bytes)

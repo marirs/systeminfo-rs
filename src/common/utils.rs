@@ -52,7 +52,7 @@ pub fn value_for_substring<'a>(from_str: &'a str, substr: &str) -> Option<&'a st
         // Find where the word boundary ends
         let word_end = string
             .find(|c: char| c.is_whitespace())
-            .unwrap_or_else(|| string.len());
+            .unwrap_or(string.len());
         let string = string[..word_end].trim_matches(&[' ', '=', '\"'] as &[_]);
 
         Some(string)
@@ -96,11 +96,11 @@ pub fn exec_command_with_args(command: &str, args: &[&str]) -> Result<String, Er
         .args(args)
         .output()
         .map_err(|e| e.to_string())
-        .and_then(|out| {
+        .map(|out| {
             if out.stdout.is_empty() {
-                Ok(out.stderr[..].as_string())
+                out.stderr[..].as_string()
             } else {
-                Ok(out.stdout[..].as_string())
+                out.stdout[..].as_string()
             }
         })
 }
