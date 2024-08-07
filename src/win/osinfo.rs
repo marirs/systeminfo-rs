@@ -51,7 +51,7 @@ pub fn from_system_os() -> SystemOS {
     SystemOS {
         os: "Microsoft Windows".to_string(),
         kernel: kernel.split('.').last().unwrap_or_default().to_string(),
-        edition: edition.unwrap_or_default(),
+        edition: edition.unwrap_or_default(), //TODO исправить windows 11
         version: version.to_string(),
         architecture: os_arch().to_string(),
         hostname: hostname().unwrap_or_default(),
@@ -68,7 +68,7 @@ fn version() -> (Version, Option<String>) {
                 v.dwMinorVersion as u64,
                 v.dwBuildNumber as u64,
             ),
-            product_name().or_else(|| edition(&v)),
+            product_name(&v).or_else(|| edition(&v)),
         ),
     }
 }
@@ -133,7 +133,7 @@ fn version_info() -> Option<OSVERSIONINFOEX> {
     }
 }
 
-fn product_name() -> Option<String> {
+fn product_name(v: &OSVERSIONINFOEX) -> Option<String> {
     const REG_SUCCESS: LSTATUS = ERROR_SUCCESS as LSTATUS;
 
     let sub_key = to_wide("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion");
@@ -191,11 +191,12 @@ fn product_name() -> Option<String> {
         }
         _ => {}
     }
-
+    // check the build and change the value from 10 to 11
     Some(
         OsString::from_wide(data.as_slice())
             .to_string_lossy()
-            .into_owned(),
+            .into_owned()
+            .replace("10", if v.dwBuildNumber >= 22000 { "11" } else { "10" })
     )
 }
 
@@ -210,23 +211,25 @@ fn edition(version_info: &OSVERSIONINFOEX) -> Option<String> {
         version_info.dwMajorVersion,
         version_info.dwMinorVersion,
         version_info.wProductType,
+        version_info.dwBuildNumber
     ) {
         // Windows 10.
-        (10, 0, VER_NT_WORKSTATION) => Some("Windows 10"),
-        (10, 0, _) => Some("Windows Server 2016"),
+        (10, 0, VER_NT_WORKSTATION, build) if build >= 22000 => Some("Windows 11"),
+        (10, 0, VER_NT_WORKSTATION, build) if build < 22000 => Some("Windows 10"),
+        (10, 0, _, _) => Some("Windows Server 2016"),
         // Windows Vista, 7, 8 and 8.1.
-        (6, 3, VER_NT_WORKSTATION) => Some("Windows 8.1"),
-        (6, 3, _) => Some("Windows Server 2012 R2"),
-        (6, 2, VER_NT_WORKSTATION) => Some("Windows 8"),
-        (6, 2, _) => Some("Windows Server 2012"),
-        (6, 1, VER_NT_WORKSTATION) => Some("Windows 7"),
-        (6, 1, _) => Some("Windows Server 2008 R2"),
-        (6, 0, VER_NT_WORKSTATION) => Some("Windows Vista"),
-        (6, 0, _) => Some("Windows Server 2008"),
+        (6, 3, VER_NT_WORKSTATION, _) => Some("Windows 8.1"),
+        (6, 3, _, _) => Some("Windows Server 2012 R2"),
+        (6, 2, VER_NT_WORKSTATION, _) => Some("Windows 8"),
+        (6, 2, _, _) => Some("Windows Server 2012"),
+        (6, 1, VER_NT_WORKSTATION, _) => Some("Windows 7"),
+        (6, 1, _, _) => Some("Windows Server 2008 R2"),
+        (6, 0, VER_NT_WORKSTATION, _) => Some("Windows Vista"),
+        (6, 0, _, _) => Some("Windows Server 2008"),
         // Windows 2000, Home Server, 2003 Server, 2003 R2 Server, XP and XP Professional x64.
-        (5, 1, _) => Some("Windows XP"),
-        (5, 0, _) => Some("Windows 2000"),
-        (5, 2, _) if unsafe { GetSystemMetrics(SM_SERVERR2) } == 0 => {
+        (5, 1, _, _) => Some("Windows XP"),
+        (5, 0, _, _) => Some("Windows 2000"),
+        (5, 2, _, _) if unsafe { GetSystemMetrics(SM_SERVERR2) } == 0 => {
             let mut info: SYSTEM_INFO = unsafe { mem::zeroed() };
             unsafe { GetSystemInfo(&mut info) };
 
