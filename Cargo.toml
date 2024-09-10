@@ -11,9 +11,9 @@ version = "0.1.5"
 edition = "2021"
 
 [dependencies]
-humanize = { git = "https://github.com/marirs/humanize-rs", branch = "master" }
 libc = "0.2.94"
 serde = { version = "1.0.126", features = ["derive"] }
+chrono = "0.4.38"
 
 [target.'cfg(target_os = "windows")'.dependencies]
 wmi = "0.8.1"

@@ -1,9 +1,10 @@
 use serde::{Deserialize, Serialize};
 use std::fmt::{self, Display, Formatter};
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone, PartialEq, Eq)]
 pub enum Version {
     /// Unknown version.
+    #[default]
     Unknown,
     /// Semantic version (major.minor.patch).
     Semantic(u64, u64, u64),
@@ -23,12 +24,6 @@ impl Version {
         } else {
             Self::Custom(s.into())
         }
-    }
-}
-
-impl Default for Version {
-    fn default() -> Self {
-        Version::Unknown
     }
 }
 

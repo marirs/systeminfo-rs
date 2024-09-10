@@ -13,4 +13,7 @@ mod platform;
 mod common;
 
 pub mod consts;
+#[cfg(not(target_os = "macos"))]
+mod humanize;
+
 pub use self::platform::*;

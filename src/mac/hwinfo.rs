@@ -81,7 +81,6 @@ pub fn from_system_hardware() -> SystemHardware {
         leaf7_features.cloned().unwrap_or_default()
     )
     .split_whitespace()
-    .into_iter()
     .map(|l| l.trim().to_ascii_uppercase())
     .collect();
 

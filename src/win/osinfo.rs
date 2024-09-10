@@ -196,7 +196,7 @@ fn product_name(v: &OSVERSIONINFOEX) -> Option<String> {
         OsString::from_wide(data.as_slice())
             .to_string_lossy()
             .into_owned()
-            .replace("10", if v.dwBuildNumber >= 22000 { "11" } else { "10" })
+            .replace("10", if v.dwBuildNumber >= 22000 { "11" } else { "10" }),
     )
 }
 
@@ -211,7 +211,7 @@ fn edition(version_info: &OSVERSIONINFOEX) -> Option<String> {
         version_info.dwMajorVersion,
         version_info.dwMinorVersion,
         version_info.wProductType,
-        version_info.dwBuildNumber
+        version_info.dwBuildNumber,
     ) {
         // Windows 10.
         (10, 0, VER_NT_WORKSTATION, build) if build >= 22000 => Some("Windows 11"),
