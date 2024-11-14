@@ -2,8 +2,8 @@
 use crate::{
     common::utils::{exec_command_with_args, to_hashmap, ToVecString},
     consts::SystemHardware,
+    humanize::Humanize,
 };
-use humanize::Humanize;
 use std::collections::HashMap;
 
 fn get_mem_info() -> Option<HashMap<String, String>> {

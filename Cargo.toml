@@ -7,7 +7,7 @@ repository = "https://github.com/marirs/systeminfo-rs"
 exclude = ["examples"]
 readme = "README.md"
 license = "MIT"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 
 [dependencies]
