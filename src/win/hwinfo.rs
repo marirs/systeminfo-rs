@@ -1,6 +1,6 @@
 #![allow(non_camel_case_types, non_snake_case)]
 use crate::consts::SystemHardware;
-use humanize::Humanize;
+use crate::humanize::Humanize;
 use serde::{Deserialize, Deserializer, Serialize};
 use wmi::{COMLibrary, WMIConnection, WMIDateTime};
 
